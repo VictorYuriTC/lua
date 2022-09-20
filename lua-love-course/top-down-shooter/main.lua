@@ -14,6 +14,7 @@ function love.load()
   player.speed = 180
 
   zombies = {}
+  bullets = {}
 end
 
 function love.update(dt)
@@ -48,6 +49,11 @@ function love.update(dt)
     end
   end
 
+  for i,b in ipairs(bullets) do
+    b.x = b.x + (math.cos(b.direction) * b.speed * dt)
+    b.y = b.y + (math.sin(b.direction) * b.speed * dt)
+  end
+
 end
 
 function love.draw()
@@ -63,6 +69,10 @@ function love.draw()
     local zombieAnchorY = sprites.zombie:getHeight() / 2
     love.graphics.draw(sprites.zombie, z.x, z.y, zombiePlayerAngle(z), nil, nil, zombieAnchorX, zombieAnchorY)
   end
+
+  for i,b in ipairs(bullets) do
+    love.graphics.draw(sprites.bullet, b.x, b. y)
+  end
 end
 
 function playerMouseAngle()
@@ -71,6 +81,12 @@ end
 
 function zombiePlayerAngle(enemy)
   return math.atan2(player.y - enemy.y, player.x - enemy.x)
+end
+
+function love.mousepressed(x, y, button)
+  if button == 1 then
+    spawnBullet()
+  end
 end
 
 function love.keypressed(key)
@@ -86,6 +102,16 @@ function spawnZombie()
   zombie.speed = 140
   table.insert(zombies, zombie)
 end
+
+function spawnBullet()
+  local bullet = {}
+  bullet.x = player.x
+  bullet.y = player.y
+  bullet.speed = 500
+  bullet.direction = playerMouseAngle()
+  table.insert(bullets, bullet)
+end
+
 
 function distanceBetween(x1, y1, x2, y2)
   return math.sqrt((x2 - x1)^2 + (y2 - y1)^2)
