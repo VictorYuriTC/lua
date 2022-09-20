@@ -36,6 +36,11 @@ function love.update(dt)
   if love.keyboard.isDown('s') then
     player.y = playerY + playerSpeed * dt
   end
+
+  for i,z in ipairs(zombies) do
+    z.x = z.x + (math.cos(zombiePlayerAngle(z)) * z.speed * dt)
+    z.y = z.y + (math.sin(zombiePlayerAngle(z)) * z.speed * dt)
+  end
 end
 
 function love.draw()
@@ -71,6 +76,6 @@ function spawnZombie()
   local zombie = {}
   zombie.x = math.random(0, love.graphics.getWidth())
   zombie.y = math.random(0, love.graphics.getHeight())
-  zombie.speed = 120
+  zombie.speed = 140
   table.insert(zombies, zombie)
 end
