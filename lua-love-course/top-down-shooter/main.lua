@@ -1,6 +1,8 @@
 pi = math.pi
 
 function love.load()
+  math.randomseed(os.time())
+
   sprites = {}
   sprites.background = love.graphics.newImage('sprites/background.png')
   sprites.bullet = love.graphics.newImage('sprites/bullet.png')
@@ -10,13 +12,16 @@ function love.load()
   player = {}
   player.x = love.graphics.getWidth() / 2
   player.y = love.graphics.getHeight() / 2
-
   player.speed = 180
+
+  menuFont = love.graphics.newFont(40)
 
   zombies = {}
   bullets = {}
 
-  gameState = 2
+  score = 0
+
+  gameState = 1
   maxTime = 2
   timer = maxTime
 end
@@ -55,6 +60,13 @@ function love.draw()
 
   love.graphics.draw(sprites.background, 0, 0)
 
+  if gameState == 1 then
+    love.graphics.printf('Click anywhere to begin!', 0, 50, love.graphics.getWidth(), 'center')
+    love.graphics.setFont(menuFont)
+  end
+
+  love.graphics.printf('Score: ' ..score, 15, love.graphics.getHeight() - 100, love.graphics.getWidth(), 'center')
+
   love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngle(), nil, nil, playerAnchorX, playerAnchorY)
 
   for i,z in ipairs(zombies) do
@@ -67,19 +79,20 @@ function love.draw()
 end
 
 function playerMovimentation(dt)
-  if love.keyboard.isDown('d') then
+
+  if love.keyboard.isDown('d') and player.x < love.graphics.getWidth() + 15 then
     player.x = player.x + player.speed * dt
   end
 
-  if love.keyboard.isDown('a') then
+  if love.keyboard.isDown('a') and player.x > 15 then
     player.x = player.x - player.speed * dt
   end
 
-  if love.keyboard.isDown('w') then
+  if love.keyboard.isDown('w') and player.y > 15 then
     player.y = player.y - player.speed * dt
   end
 
-  if love.keyboard.isDown('s') then
+  if love.keyboard.isDown('s') and player.y < love.graphics.getHeight() + 15 then
     player.y = player.y + player.speed * dt
   end
 end
@@ -92,11 +105,16 @@ function zombiesMovimentation(dt)
 end
 
 function gameOverWhenZombieHitsPlayer()
+  local screenCenterX = love.graphics.getWidth() / 2
+  local screenCenterY = love.graphics.getHeight() / 2
+
   for i,z in ipairs(zombies) do
     if distanceBetween(z.x, z.y, player.x, player.y) < 40 then
       for i,z in ipairs(zombies) do
         zombies[i] = nil
         gameState = 1
+        player.x = screenCenterX
+        player.y = screenCenterY
       end
     end
   end
@@ -118,14 +136,14 @@ function zombiePlayerAngle(enemy)
 end
 
 function love.mousepressed(x, y, button)
-  if button == 1 then
+  if button == 1 and gameState == 2 then
     spawnBullet()
-  end
-end
 
-function love.keypressed(key)
-  if key == 'space' then
-    spawnZombie()
+  elseif button == 1 and gameState == 1 then
+    gameState = 2
+    maxTime = 2
+    timer = maxTime
+    score = 0
   end
 end
 
@@ -178,6 +196,7 @@ function deleteZombieWhenHitting()
     local z = zombies[i]
     if z.isDead then
       table.remove(zombies, i)
+      score = score + 50
     end
   end
 end
