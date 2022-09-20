@@ -54,24 +54,34 @@ function love.update(dt)
     b.y = b.y + (math.sin(b.direction) * b.speed * dt)
   end
 
+  for i=#bullets, 1, -1 do
+    local b = bullets[i]
+
+    if b.x < 0 or b.y < 0 or b.x > love.graphics.getWidth() or b.y > love.graphics.getWidth() then
+      table.remove(bullets, i)
+    end 
+  end
+
 end
 
 function love.draw()
   local playerAnchorX = sprites.player:getWidth() / 2
   local playerAnchorY = sprites.player:getHeight() / 2
+  local zombieAnchorX = sprites.zombie:getWidth() / 2
+  local zombieAnchorY = sprites.zombie:getHeight() / 2
+  local bulletAnchorX = sprites.bullet:getWidth() / 2
+  local bulletAnchorY = sprites.bullet:getHeight() / 2
 
   love.graphics.draw(sprites.background, 0, 0)
 
   love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngle(), nil, nil, playerAnchorX, playerAnchorY)
 
   for i,z in ipairs(zombies) do
-    local zombieAnchorX = sprites.zombie:getWidth() / 2
-    local zombieAnchorY = sprites.zombie:getHeight() / 2
     love.graphics.draw(sprites.zombie, z.x, z.y, zombiePlayerAngle(z), nil, nil, zombieAnchorX, zombieAnchorY)
   end
 
   for i,b in ipairs(bullets) do
-    love.graphics.draw(sprites.bullet, b.x, b. y)
+    love.graphics.draw(sprites.bullet, b.x, b. y, nil, 0.2, 0.2)
   end
 end
 
