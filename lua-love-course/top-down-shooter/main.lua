@@ -15,6 +15,10 @@ function love.load()
 
   zombies = {}
   bullets = {}
+
+  gameState = 2
+  maxTime = 2
+  timer = maxTime
 end
 
 function love.update(dt)
@@ -30,6 +34,15 @@ function love.update(dt)
   whenHittingSetIsDeadAndHasHit()
   deleteZombieWhenHitting()
   deleteBulletWhenHitting()
+
+  if gameState == 2 then
+    timer = timer - dt
+    if timer <= 0 then
+      spawnZombie()
+      maxTime = 0.95 * maxTime
+      timer = maxTime
+    end
+  end
 end
 
 function love.draw()
@@ -83,6 +96,7 @@ function gameOverWhenZombieHitsPlayer()
     if distanceBetween(z.x, z.y, player.x, player.y) < 40 then
       for i,z in ipairs(zombies) do
         zombies[i] = nil
+        gameState = 1
       end
     end
   end
@@ -159,16 +173,6 @@ function spawnZombie()
   end
 end
 
-function deleteBulletWhenHitting()
-  for i=#bullets, 1, -1 do
-    local b = bullets[i]
-    if b.hasHit then
-      table.remove(bullets, i)
-    end
-  end
-end
-
-
 function deleteZombieWhenHitting()
   for i=#zombies, 1, -1 do
     local z = zombies[i]
@@ -186,6 +190,15 @@ function spawnBullet()
   bullet.hasHit = false
   bullet.direction = playerMouseAngle()
   table.insert(bullets, bullet)
+end
+
+function deleteBulletWhenHitting()
+  for i=#bullets, 1, -1 do
+    local b = bullets[i]
+    if b.hasHit then
+      table.remove(bullets, i)
+    end
+  end
 end
 
 function removeBulletWhenPassingScreenBorders()
