@@ -18,73 +18,18 @@ function love.load()
 end
 
 function love.update(dt)
-  local playerSpeed = player.speed
-  local playerX = player.x
-  local playerY = player.y
+  playerMovimentation(dt)
 
-  if love.keyboard.isDown('d') then
-    player.x = playerX + playerSpeed * dt
-  end
+  zombiesMovimentation(dt)
+  gameOverWhenZombieHitsPlayer()
 
-  if love.keyboard.isDown('a') then
-    player.x = playerX - playerSpeed * dt
-  end
+  bulletMovimentation(dt)
 
-  if love.keyboard.isDown('w') then
-    player.y = playerY - playerSpeed * dt
-  end
+  removeBulletWhenPassingScreenBorders()
 
-  if love.keyboard.isDown('s') then
-    player.y = playerY + playerSpeed * dt
-  end
-
-  for i,z in ipairs(zombies) do
-    z.x = z.x + (math.cos(zombiePlayerAngle(z)) * z.speed * dt)
-    z.y = z.y + (math.sin(zombiePlayerAngle(z)) * z.speed * dt)
-
-    if distanceBetween(z.x, z.y, player.x, player.y) < 40 then
-      for i,z in ipairs(zombies) do
-        zombies[i] = nil
-      end
-    end
-  end
-
-  for i,b in ipairs(bullets) do
-    b.x = b.x + (math.cos(b.direction) * b.speed * dt)
-    b.y = b.y + (math.sin(b.direction) * b.speed * dt)
-  end
-
-  for i=#bullets, 1, -1 do
-    local b = bullets[i]
-
-    if b.x < 0 or b.y < 0 or b.x > love.graphics.getWidth() or b.y > love.graphics.getWidth() then
-      table.remove(bullets, i)
-    end 
-  end
-
-  for i,z in ipairs(zombies) do
-    for j, b in ipairs(bullets) do
-      if distanceBetween(z.x, z.y, b.x, b.y) < 22 then
-        z.isDead = true
-        b.hasHit = true
-      end
-    end
-  end
-
-  for i=#zombies, 1, -1 do
-    local z = zombies[i]
-    if z.isDead then
-      table.remove(zombies, i)
-    end
-  end
-
-  for i=#bullets, 1, -1 do
-    local b = bullets[i]
-    if b.hasHit then
-      table.remove(bullets, i)
-    end
-  end
-
+  whenHittingSetIsDeadAndHasHit()
+  deleteZombieWhenHitting()
+  deleteBulletWhenHitting()
 end
 
 function love.draw()
@@ -108,6 +53,48 @@ function love.draw()
   end
 end
 
+function playerMovimentation(dt)
+  if love.keyboard.isDown('d') then
+    player.x = player.x + player.speed * dt
+  end
+
+  if love.keyboard.isDown('a') then
+    player.x = player.x - player.speed * dt
+  end
+
+  if love.keyboard.isDown('w') then
+    player.y = player.y - player.speed * dt
+  end
+
+  if love.keyboard.isDown('s') then
+    player.y = player.y + player.speed * dt
+  end
+end
+
+function zombiesMovimentation(dt)
+  for i,z in ipairs(zombies) do
+    z.x = z.x + (math.cos(zombiePlayerAngle(z)) * z.speed * dt)
+    z.y = z.y + (math.sin(zombiePlayerAngle(z)) * z.speed * dt)
+  end
+end
+
+function gameOverWhenZombieHitsPlayer()
+  for i,z in ipairs(zombies) do
+    if distanceBetween(z.x, z.y, player.x, player.y) < 40 then
+      for i,z in ipairs(zombies) do
+        zombies[i] = nil
+      end
+    end
+  end
+end
+
+function bulletMovimentation(dt)
+  for i,b in ipairs(bullets) do
+    b.x = b.x + (math.cos(b.direction) * b.speed * dt)
+    b.y = b.y + (math.sin(b.direction) * b.speed * dt)
+  end
+end
+
 function playerMouseAngle()
   return math.atan2(player.y - love.mouse.getY(), player.x - love.mouse.getX()) + pi
 end
@@ -128,6 +115,27 @@ function love.keypressed(key)
   end
 end
 
+function zombieSpawnSideOne(enemy)
+  enemy.x = -30
+  enemy.y = math.random(0, love.graphics.getHeight())
+end
+
+function zombieSpawnSideTwo(enemy)
+  enemy.x = love.graphics.getWidth() + 30
+  enemy.y = math.random(0, love.graphics.getHeight())
+end
+
+function zombieSpawnSideThree(enemy)
+  enemy.x = math.random(0, love.graphics.getWidth())
+  enemy.y = -30
+end
+
+function zombieSpawnSideFour(enemy)
+  enemy.x = math.random(0, love.graphics.getWidth())
+  enemy.y = love.graphics.getHeight() + 30
+end
+
+
 function spawnZombie()
   local zombie = {}
   local side = math.random(1, 4)
@@ -141,17 +149,32 @@ function spawnZombie()
   local side = math.random(1, 4)
 
   if side == 1 then
-    zombie.x = -30
-    zombie.y = math.random(0, love.graphics.getHeight())
+    zombieSpawnSideOne(zombie)
   elseif side == 2 then
-    zombie.x = love.graphics.getWidth() + 30
-    zombie.y = math.random(0, love.graphics.getHeight())
+    zombieSpawnSideTwo(zombie)
   elseif side == 3 then
-    zombie.x = math.random(0, love.graphics.getWidth())
-    zombie.y = -30
+    zombieSpawnSideThree(zombie)
   elseif side == 4 then
-    zombie.x = math.random(0, love.graphics.getWidth())
-    zombie.y = love.graphics.getHeight() + 30
+    zombieSpawnSideFour(zombie)
+  end
+end
+
+function deleteBulletWhenHitting()
+  for i=#bullets, 1, -1 do
+    local b = bullets[i]
+    if b.hasHit then
+      table.remove(bullets, i)
+    end
+  end
+end
+
+
+function deleteZombieWhenHitting()
+  for i=#zombies, 1, -1 do
+    local z = zombies[i]
+    if z.isDead then
+      table.remove(zombies, i)
+    end
   end
 end
 
@@ -165,6 +188,26 @@ function spawnBullet()
   table.insert(bullets, bullet)
 end
 
+function removeBulletWhenPassingScreenBorders()
+  for i=#bullets, 1, -1 do
+    local b = bullets[i]
+
+    if b.x < 0 or b.y < 0 or b.x > love.graphics.getWidth() or b.y > love.graphics.getWidth() then
+      table.remove(bullets, i)
+    end 
+  end
+end
+
+function whenHittingSetIsDeadAndHasHit()
+  for i,z in ipairs(zombies) do
+    for j, b in ipairs(bullets) do
+      if distanceBetween(z.x, z.y, b.x, b.y) < 22 then
+        z.isDead = true
+        b.hasHit = true
+      end
+    end
+  end
+end
 
 function distanceBetween(x1, y1, x2, y2)
   return math.sqrt((x2 - x1)^2 + (y2 - y1)^2)
