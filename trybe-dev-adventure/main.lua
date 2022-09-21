@@ -6,9 +6,19 @@ function love.load()
 
   world = wf.newWorld(0, 800, false)
 
-  require('player')
+  sprites = {}
+  sprites.playerSheet = love.graphics.newImage('sprites/santasprites/png/Idle (1).png')
+
+  animations = {}
+
+  local playerGrid = anim8.newGrid(614, 564, sprites
+    .playerSheet:getWidth(), sprites.playerSheet:getHeight())
+
+  animations.playerIdle = anim8.newAnimation(playerGrid('1-1', 1), 0.05)
 
   world:addCollisionClass('Player')
+
+  require('player')
 
   platforms = {}
 
@@ -24,6 +34,7 @@ end
 function love.draw()
   world:draw()
   gameMap:drawLayer(gameMap.layers['WinterTiles'])
+  playerFunctions.drawPlayer()
 end
   
 function love.keypressed(key)
