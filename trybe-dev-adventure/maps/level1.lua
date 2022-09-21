@@ -225,7 +225,7 @@ return {
       type = "objectgroup",
       draworder = "topdown",
       id = 3,
-      name = "Objects",
+      name = "Platforms",
       class = "",
       visible = true,
       opacity = 1,
