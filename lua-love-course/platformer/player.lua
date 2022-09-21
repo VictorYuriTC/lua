@@ -63,27 +63,6 @@ PlayerTable.playerRunningMovimentation = function()
   
 end
 
-PlayerTable.playerJumpingMovimentation = function()
-  function love.keypressed(key)
-    if not PlayerTable.isPlayerAlive() then
-      return
-    end
-
-    local colliders = world:queryRectangleArea(player:getX() - 20, player:getY() + 50, 40, 2, {'Platform'})
-
-    if key == 'up' or key == 'space' then
-      if #colliders > 0 then
-        player:applyLinearImpulse(0, -4000)
-        player.isJumping = true
-      end
-    end
-
-    if #colliders == 0 then
-      player.isJumping = true
-    end
-  end
-end
-
 PlayerTable.playerChangeAnimation = function()
   if player.isMoving then
     player.animation = animations.run
