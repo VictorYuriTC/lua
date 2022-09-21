@@ -1,35 +1,38 @@
 function love.load()
   love.window.setMode(1000, 768)
 
+  wf = require 'libraries/windfield/windfield'
   anim8 = require 'libraries/anim8/anim8'
   sti = require 'libraries/Simple-Tiled-Implementation/sti'
   cameraFile = require 'libraries/hump/camera'
-
+  
   cam = cameraFile()
 
   sprites = {}
   sprites.playerSheet = love.graphics.newImage('sprites/playerSheet.png')
+  sprites.enemySheet = love.graphics.newImage('sprites/enemySheet.png')
 
   local grid = anim8.newGrid(614, 564, sprites
     .playerSheet:getWidth(), sprites.playerSheet:getHeight())
+
+  local enemyGrid = anim8.newGrid(100, 79, sprites
+    .enemySheet:getWidth(), sprites.enemySheet:getHeight())
 
   animations = {}
   animations.idle = anim8.newAnimation(grid('1-15', 1), 0.05)
   animations.jump = anim8.newAnimation(grid('1-7', 2), 0.05)
   animations.run = anim8.newAnimation(grid('1-15', 3), 0.05)
+  animations.enemy = anim8.newAnimation(enemyGrid('1-2', 1), 0.03)
 
-  wf = require 'libraries/windfield/windfield'
   world = wf.newWorld(0, 800, false)
 
   world:addCollisionClass('Platform')
   world:addCollisionClass('Player')
-  world:addCollisionClass('Danger')
+  world:addCollisionClass('Danger', { ignores = { 'Danger' }})
 
   require('player')
-
-  dangerZone = world:newRectangleCollider(0, 550, 800, 50, { collision_class = 'Danger' })
-  dangerZone:setType('static')
-
+  require('enemy')
+  
   platforms = {}
 
   loadMap()
@@ -46,6 +49,8 @@ function love.update(dt)
   PlayerTable.playerChangeAnimation()
   PlayerTable.playerAnimationUpdate(dt)
 
+  updateEnemies(dt)
+
   destroyAreaOnClicking()
   makeCameraVisionFollowPlayer()
 
@@ -53,6 +58,7 @@ end
 
 function love.draw()
   cam:attach()
+  drawEnemies()
     gameMap:drawLayer(gameMap.layers["Tile Layer 1"])
     world:draw()
 
@@ -61,6 +67,10 @@ function love.draw()
 end
 
 function makeCameraVisionFollowPlayer()
+  if not PlayerTable.isPlayerAlive() then
+    return
+  end
+
   local px, py = player:getPosition()
   cam:lookAt(px, love.graphics.getHeight() / 2)
 end
@@ -68,8 +78,12 @@ end
 function loadMap()
   gameMap = sti("maps/level1.lua")
 
-  for i, obj in pairs(gameMap.layers["Platforms"].objects) do
-    spawnPlatform(obj.x, obj.y, obj.width, obj.height)
+  for i, platform in pairs(gameMap.layers["Platforms"].objects) do
+    spawnPlatform(platform.x, platform.y, platform.width, platform.height)
+  end
+
+  for i, enemy in pairs(gameMap.layers["Enemies"].objects) do
+    spawnEnemy(enemy.x, enemy.y, enemy.width, enemy.height)
   end
 end
 

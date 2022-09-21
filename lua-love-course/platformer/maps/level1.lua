@@ -9,8 +9,8 @@ return {
   height = 12,
   tilewidth = 64,
   tileheight = 64,
-  nextlayerid = 3,
-  nextobjectid = 10,
+  nextlayerid = 4,
+  nextobjectid = 14,
   properties = {},
   tilesets = {
     {
@@ -74,6 +74,61 @@ return {
         0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 6, 0, 1, 2, 2, 2, 3, 0, 4, 5, 6, 0, 4, 5, 6, 0, 0, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 6, 0, 4, 5, 5, 5, 6, 0, 4, 5, 6, 0, 4, 5, 6, 0, 0, 4, 5, 6, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 6, 0, 4, 5, 5, 5, 6, 0, 4, 5, 6, 0, 4, 5, 6, 0, 0, 4, 5, 6, 0, 0, 0, 0, 0, 4, 6, 0, 0, 0
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 3,
+      name = "Enemies",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 11,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 768,
+          y = 512,
+          width = 64,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 12,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 1024,
+          y = 512,
+          width = 64,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 13,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 1408,
+          y = 256,
+          width = 64,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
       }
     },
     {
@@ -164,6 +219,19 @@ return {
           y = 640,
           width = 128,
           height = 128,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 10,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 1984,
+          y = 1088,
+          width = 0,
+          height = 0,
           rotation = 0,
           visible = true,
           properties = {}
