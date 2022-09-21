@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="40" height="12" tilewidth="64" tileheight="64" infinite="0" nextlayerid="4" nextobjectid="5">
+ <tileset firstgid="1" name="WinterTiles" tilewidth="64" tileheight="64" tilecount="4" columns="2">
+  <image source="../sprites/wintertileset/Tiles/1.png" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="5" name="WinterTiles2" tilewidth="64" tileheight="64" tilecount="4" columns="2">
+  <image source="../sprites/wintertileset/Tiles/2.png" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="9" name="WinterTiles3" tilewidth="64" tileheight="64" tilecount="4" columns="2">
+  <image source="../sprites/wintertileset/Tiles/3.png" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="13" name="WinterTiles4" tilewidth="64" tileheight="64" tilecount="4" columns="2">
+  <image source="../sprites/wintertileset/Tiles/4.png" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="17" name="WinterTiles5" tilewidth="64" tileheight="64" tilecount="4" columns="2">
+  <image source="../sprites/wintertileset/Tiles/5.png" width="128" height="128"/>
+ </tileset>
+ <layer id="1" name="WinterTiles" width="40" height="12">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+1,2,2,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+3,11,11,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+3,14,16,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+3,20,17,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+3,16,19,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+3,14,16,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="StartPoint">
+  <object id="2" x="64" y="320" width="64" height="64"/>
+ </objectgroup>
+ <objectgroup id="3" name="Objects">
+  <object id="4" x="0" y="384" width="256" height="384"/>
+ </objectgroup>
+</map>
