@@ -19,6 +19,7 @@ function love.load()
   sprites = {}
   sprites.playerSheet = love.graphics.newImage('sprites/playerSheet.png')
   sprites.enemySheet = love.graphics.newImage('sprites/enemySheet.png')
+  sprites.background = love.graphics.newImage('sprites/background.png')
 
   local grid = anim8.newGrid(614, 564, sprites
     .playerSheet:getWidth(), sprites.playerSheet:getHeight())
@@ -41,6 +42,9 @@ function love.load()
   require('player')
   require('enemy')
   require('libraries/show')
+
+  dangerZone = world:newRectangleCollider(-500, 800, 5000, 50, { collision_class = 'Danger' })
+  dangerZone:setType('static')
   
   platforms = {}
 
@@ -76,10 +80,10 @@ function love.update(dt)
 end
 
 function love.draw()
+  love.graphics.draw(sprites.background, 0, 0)
   cam:attach()
   drawEnemies()
     gameMap:drawLayer(gameMap.layers["Tile Layer 1"])
-    world:draw()
 
     PlayerTable.drawPlayer()
   cam:detach()
@@ -112,8 +116,16 @@ function loadMap(mapName)
 
   destroyAllPlatforms()
   destroyAllEnemies()
-  player:setPosition(300, 100)
+
+
   gameMap = sti("maps/" .. mapName .. ".lua")
+
+  for i, startPoint in pairs(gameMap.layers["Start"].objects) do
+    playerStartX = startPoint.x
+    playerStartY = startPoint.y
+  end
+
+  player:setPosition(playerStartX, playerStartY)
 
   for i, platform in pairs(gameMap.layers["Platforms"].objects) do
     spawnPlatform(platform.x, platform.y, platform.width, platform.height)
@@ -181,7 +193,7 @@ function spawnPlatform(x, y, width, height)
     return
   end
 
-  local platform = world:newRectangleCollider(x, y, width, height, { collision_class ='Platform' })
+  local platform = world:newRectangleCollider(x, y, width, height, { collision_class = 'Platform' })
   platform:setType('static')
   
   table.insert(platforms, platform)
