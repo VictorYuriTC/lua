@@ -2,6 +2,7 @@ playerStartX = 0
 playerStartY = 0
 
 player = world:newRectangleCollider(100, 0, 40, 100, { collision_class = 'Player' })
+player:setFixedRotation(true)
 
 playerFunctions = {}
 

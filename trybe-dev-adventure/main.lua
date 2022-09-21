@@ -23,10 +23,13 @@ end
   
 function love.draw()
   world:draw()
+  gameMap:drawLayer(gameMap.layers['WinterTiles'])
 end
   
 function love.keypressed(key)
-
+  if key == 'space' then
+    player:applyLinearImpulse(0, -4000)
+  end
 end
 
 function loadMap()
