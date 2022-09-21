@@ -1,5 +1,8 @@
 function love.load()
+  love.window.setMode(1000, 768)
+
   anim8 = require 'libraries/anim8/anim8'
+  sti = require 'libraries/Simple-Tiled-Implementation/sti'
 
   sprites = {}
   sprites.playerSheet = love.graphics.newImage('sprites/playerSheet.png')
@@ -27,10 +30,13 @@ function love.load()
 
   dangerZone = world:newRectangleCollider(0, 550, 800, 50, { collision_class = 'Danger' })
   dangerZone:setType('static')
+
+  loadMap()
 end
 
 function love.update(dt)
   world:update(dt)
+  gameMap:update(dt)
 
   PlayerTable.playerIdleMovimentation()
   PlayerTable.playerRunningMovimentation()
@@ -43,9 +49,14 @@ function love.update(dt)
 end
 
 function love.draw()
+  gameMap:drawLayer(gameMap.layers["Tile Layer 1"])
   world:draw()
 
   PlayerTable.drawPlayer()
+end
+
+function loadMap()
+  gameMap = sti("maps/level1.lua")
 end
 
 function destroyAreaOnClicking()
