@@ -8,6 +8,14 @@ function love.load()
   
   cam = cameraFile()
 
+  sounds = {}
+  sounds.jump = love.audio.newSource('audio/jump.wav', "static")
+  sounds.music = love.audio.newSource('audio/music.mp3', "stream")
+  sounds.music:setLooping(true)
+  sounds.music:setVolume(0.3)
+
+  sounds.music:play()
+
   sprites = {}
   sprites.playerSheet = love.graphics.newImage('sprites/playerSheet.png')
   sprites.enemySheet = love.graphics.newImage('sprites/enemySheet.png')
@@ -88,6 +96,7 @@ function love.keypressed(key)
   if key == 'up' or key == 'space' then
     if #colliders > 0 then
       player:applyLinearImpulse(0, -4000)
+      sounds.jump:play()
       player.isJumping = true
     end
   end
