@@ -8,6 +8,7 @@ function love.load()
 
   sprites = {}
   sprites.playerSheet = love.graphics.newImage('sprites/santasprites/png/Idle (1).png')
+  sprites.background = love.graphics.newImage('sprites/wintertileset/bg/bg.png')
 
   animations = {}
 
@@ -17,6 +18,7 @@ function love.load()
   animations.playerIdle = anim8.newAnimation(playerGrid('1-1', 1), 0.05)
 
   world:addCollisionClass('Player')
+  world:addCollisionClass('Danger')
 
   require('player')
 
@@ -32,15 +34,19 @@ function love.update(dt)
 end
   
 function love.draw()
+  love.graphics.draw(sprites.background, 0, 0)
+
   world:draw()
   gameMap:drawLayer(gameMap.layers['WinterTiles'])
   playerFunctions.drawPlayer()
 end
   
 function love.keypressed(key)
-  if key == 'space' then
+
+  if key == 'space' or key == 'up' then
     player:applyLinearImpulse(0, -4000)
   end
+  
 end
 
 function loadMap()
@@ -65,4 +71,8 @@ function spawnPlatform(x, y, width, height)
   platform:setType('static')
   
   table.insert(platforms, platform)
+end
+
+function spawnEnemy(x, y)
+  
 end

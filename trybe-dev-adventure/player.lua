@@ -11,11 +11,11 @@ playerFunctions = {}
 playerFunctions.playerBasicMovimentation = function()
   local px, py = player:getPosition()
 
-  if love.keyboard.isDown('a') then
+  if love.keyboard.isDown('a') or love.keyboard.isDown('left') then
     player:setX(px - 4)
   end
 
-  if love.keyboard.isDown('d') then
+  if love.keyboard.isDown('d') or love.keyboard.isDown('right') then
     player:setX(px + 4)
   end
 end
