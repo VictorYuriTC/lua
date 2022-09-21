@@ -8,6 +8,10 @@ player.direction = 1
 
 PlayerTable = {}
 
+PlayerTable.playerAnimationUpdate = function(dt)
+  player.animation:update(dt)
+end
+
 PlayerTable.isPlayerAlive = function()
   if player.body then
     return true
