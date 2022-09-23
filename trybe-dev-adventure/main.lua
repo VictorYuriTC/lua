@@ -4,6 +4,8 @@ function love.load()
   sti = require 'libraries/Simple-Tiled-Implementation/sti'
   cameraFile = require 'libraries/hump/camera'
 
+  cam = cameraFile()
+
   world = wf.newWorld(0, 800, false)
 
   sprites = {}
@@ -21,6 +23,9 @@ function love.load()
   world:addCollisionClass('Danger')
 
   require('player')
+  require('enemy')
+
+  enemies = {}
 
   platforms = {}
 
@@ -31,14 +36,17 @@ end
 function love.update(dt)
   world:update(dt)
   playerFunctions.playerBasicMovimentation()
+  playerFunctions.playerPerishWhenInDangerZone()
+  makeCameraVisionFollowPlayer()
 end
   
 function love.draw()
   love.graphics.draw(sprites.background, 0, 0)
-
-  world:draw()
-  gameMap:drawLayer(gameMap.layers['WinterTiles'])
-  playerFunctions.drawPlayer()
+  cam:attach()
+    world:draw()
+    gameMap:drawLayer(gameMap.layers['WinterTiles'])
+    playerFunctions.drawPlayer()
+  cam:detach()
 end
   
 function love.keypressed(key)
@@ -47,6 +55,11 @@ function love.keypressed(key)
     player:applyLinearImpulse(0, -4000)
   end
   
+end
+
+function makeCameraVisionFollowPlayer()
+  local px, py = player:getPosition()
+  cam:lookAt(px, love.graphics.getHeight() / 2)
 end
 
 function loadMap()
@@ -60,6 +73,10 @@ function loadMap()
   for index, platform in pairs(gameMap.layers['Platforms'].objects) do
     spawnPlatform(platform.x, platform.y, platform.width, platform.height)
   end
+
+  for index, enemy in pairs(gameMap.layers['Enemies'].objects) do
+    enemyFunctions.spawnEnemy(enemy.x, enemy.y)
+  end
 end
 
 function spawnPlatform(x, y, width, height)
@@ -71,8 +88,4 @@ function spawnPlatform(x, y, width, height)
   platform:setType('static')
   
   table.insert(platforms, platform)
-end
-
-function spawnEnemy(x, y)
-  
 end
