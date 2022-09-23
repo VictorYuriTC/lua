@@ -35,6 +35,7 @@ end
   
 function love.update(dt)
   world:update(dt)
+  gameMap:update()
   playerFunctions.playerBasicMovimentation()
   playerFunctions.playerPerishWhenInDangerZone()
   makeCameraVisionFollowPlayer()
@@ -59,7 +60,7 @@ end
 
 function makeCameraVisionFollowPlayer()
   local px, py = player:getPosition()
-  cam:lookAt(px, love.graphics.getHeight() / 2)
+  cam:lookAt(px, py)
 end
 
 function loadMap()

@@ -3,7 +3,7 @@ playerStartY = 0
 
 require('enemy')
 
-player = world:newRectangleCollider(100, 0, 40, 100, { collision_class = 'Player' })
+player = world:newRectangleCollider(playerStartX, playerStartY, 40, 100, { collision_class = 'Player' })
 player:setFixedRotation(true)
 player.direction = 1
 player.animation = animations.playerIdle
