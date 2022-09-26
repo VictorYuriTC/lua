@@ -7,6 +7,7 @@ player = world:newRectangleCollider(playerStartX, playerStartY, 40, 100, { colli
 player:setFixedRotation(true)
 player.direction = 1
 player.animation = animations.playerIdle
+player:setRestitution(0.3)
 
 playerFunctions = {}
 
@@ -30,5 +31,5 @@ end
 playerFunctions.playerPerishWhenInDangerZone = function()
   if not player:enter('Danger') then return end
   
-  enemyFunctions.spawnEnemy(10, 10)
+  player:destroy()
 end

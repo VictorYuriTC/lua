@@ -6,7 +6,7 @@ function love.load()
 
   cam = cameraFile()
 
-  world = wf.newWorld(0, 800, false)
+  world = wf.newWorld(0, 1600, false)
 
   sprites = {}
   sprites.playerSheet = love.graphics.newImage('sprites/santasprites/png/Idle (1).png')
@@ -53,7 +53,7 @@ end
 function love.keypressed(key)
 
   if key == 'space' or key == 'up' then
-    player:applyLinearImpulse(0, -4000)
+    player:applyLinearImpulse(0, -6000)
   end
   
 end
