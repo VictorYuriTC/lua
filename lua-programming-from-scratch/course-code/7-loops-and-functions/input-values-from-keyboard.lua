@@ -29,7 +29,9 @@ while user_option ~= 4 do
     local distance = math.sqrt((player_x - enemy_x)^2 + (player_y - enemy_y)^2)
     print('Distance from enemy to: '..distance)
   elseif user_option == 3 then
-    print('Angle')
+    local angle_radians = math.atan2((player_y - enemy_y), (player_x - enemy_x))
+    local angle_degrees = math.deg(angle_radians)
+    print('Angle between enemy and player is '..angle_degrees)
   elseif user_option == 4 then
     print("Right!")
   else
