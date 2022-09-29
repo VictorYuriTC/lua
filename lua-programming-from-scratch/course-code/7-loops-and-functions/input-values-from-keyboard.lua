@@ -26,7 +26,8 @@ while user_option ~= 4 do
     enemy_y = math.random(0, 600)
     print('New enemy pos ('..enemy_x..','..enemy_y..')')
   elseif user_option == 2 then
-    print('Distance')
+    local distance = math.sqrt((player_x - enemy_x)^2 + (player_y - enemy_y)^2)
+    print('Distance from enemy to: '..distance)
   elseif user_option == 3 then
     print('Angle')
   elseif user_option == 4 then
