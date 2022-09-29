@@ -1,3 +1,10 @@
+math.randomseed(os.time())
+
+local player_x, player_y = 400, 300
+
+local enemy_x = 0
+local enemy_y = 0
+
 local user_option = 0
 
 while user_option ~= 4 do
@@ -15,11 +22,15 @@ while user_option ~= 4 do
   user_option = io.read('*n')
 
   if user_option == 1 then
-    print('Random position')
+    enemy_x = math.random(0, 800)
+    enemy_y = math.random(0, 600)
+    print('New enemy pos ('..enemy_x..','..enemy_y..')')
   elseif user_option == 2 then
     print('Distance')
   elseif user_option == 3 then
     print('Angle')
+  elseif user_option == 4 then
+    print("Right!")
   else
     print('There is no option with this number')
   end
